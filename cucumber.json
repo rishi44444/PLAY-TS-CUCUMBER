@@ -1,6 +1,5 @@
 {
     "default": {
-        "tags": "@login",
         "formatOptions": {
             "snippetInterface": "async-await"
         },

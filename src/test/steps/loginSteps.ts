@@ -1,30 +1,36 @@
 import { Given, When, Then, setDefaultTimeout } from "@cucumber/cucumber";
 import { expect } from "@playwright/test";
 import { pageFixture } from "../../hooks/pageFixture";
+import { LoginPage } from "../pages/LoginPage";
 setDefaultTimeout(60000);
 
 Given('User navigation to the application', async function () {
-    await pageFixture.page.goto('https://bookcart.azurewebsites.net/'); 
+    const loginPage = new LoginPage(pageFixture.page);
+    await loginPage.goto();
 });
 
 Given('User clicks on the login link', async function () {
-  await pageFixture.page.locator("//button[@mattooltip='Login']").click();
+    const loginPage = new LoginPage(pageFixture.page);
+    await loginPage.clickLoginLink();
 });
 
 When('User enter the username as {string}', async function (username) {
-    await pageFixture.page.locator("input[formcontrolname='username']").fill(username);
+    const loginPage = new LoginPage(pageFixture.page);
+    await loginPage.enterUsername(username);
 });
 
 When('User enter the password as {string}', async function (password) {
-    await pageFixture.page.locator("input[formcontrolname='password']").fill(password);
+    const loginPage = new LoginPage(pageFixture.page);
+    await loginPage.enterPassword(password);
 });
 
 Given('User clicks on the login button', async function () {
-    await pageFixture.page.locator("//span[text()='Login']").click();
-    await pageFixture.page.waitForTimeout(2000);
+    const loginPage = new LoginPage(pageFixture.page);
+    await loginPage.clickLoginButton();
 });
 
 Then('Login should be successful', async function () {
-    const loginSuccess = await pageFixture.page.locator("//span[text()=' ortoni']").isVisible();
+    const loginPage = new LoginPage(pageFixture.page);
+    const loginSuccess = await loginPage.isLoginSuccessful();
     expect(loginSuccess).toBeTruthy();
 });
